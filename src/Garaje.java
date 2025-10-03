@@ -25,22 +25,22 @@ public class Garaje {
         }
         return " Autorizado ingresado exitosamente";
     }
-    public Vehiculo cargarVehiculo(String marca, String modelo, String patente, TipoVehiculo tipoVehiculo, int seleccion){
+    public Vehiculo cargarVehiculo(String marca, String modelo, String patente, TipoVehiculo tipoVehiculo,TipoAuto tipoAuto,TipoCamioneta tipoCamioneta, boolean arrElectrico){
         Vehiculo vehiculo;
         if( tipoVehiculo.equals(TipoVehiculo.AUTO)){
-            if(seleccion == 1){
+            if(tipoAuto.equals(TipoAuto.HATCHBACK)){
                 vehiculo = new Auto(marca,modelo,patente,tipoVehiculo, TipoAuto.HATCHBACK);
             }else{
                 vehiculo = new Auto(marca,modelo,patente,tipoVehiculo,TipoAuto.SEDAN);
             }
         }else if (tipoVehiculo.equals(TipoVehiculo.CAMIONETA)){
-            if(seleccion == 1){
+            if(tipoCamioneta.equals(TipoCamioneta.PICKUP)){
                 vehiculo = new Camioneta(marca,modelo,patente,tipoVehiculo,TipoCamioneta.PICKUP);
             }else {
                 vehiculo = new Camioneta(marca,modelo,patente,tipoVehiculo,TipoCamioneta.SUV);
             }
         }else{
-            if(seleccion == 1){
+            if(arrElectrico){
                 vehiculo = new Moto(marca,modelo,patente,tipoVehiculo,true);
             }else{
                 vehiculo = new Moto(marca,modelo,patente,tipoVehiculo,false);
@@ -58,20 +58,6 @@ public class Garaje {
             return " La posicion se encuentra ocupada ";
         }
         return " La posicion se cargo con exito ";
-    }
-    public String cargarMovimientos(Date fecha, int hora, Posicion posicion, Propietario autorizado, TipoMovimiento tipoMovimiento){
-        Movimiento movimiento;
-        if (tipoMovimiento.equals(TipoMovimiento.ENTRADA)){
-            movimiento = new Movimiento(fecha, hora, posicion, autorizado,TipoMovimiento.ENTRADA);
-        }else{
-            movimiento = new Movimiento(fecha, hora, posicion, autorizado, TipoMovimiento.SALIDA);
-        }
-        if(movimientos.contains(movimiento)){
-            movimientos.add(movimiento);
-        }else{
-            return " Ya se registro el movimiento ";
-        }
-        return " Movimiento registrado Correctamente ";
     }
     public String mostrarPosiciones(){
         if(!posiciones.isEmpty()){
@@ -123,12 +109,68 @@ public class Garaje {
         for (Posicion posicion : posiciones) {
             if (buscarPosicion(pos1) != -1 && !posiciones.contains(posicion)){
                 vehiculo = posicion.getVehiculo();
-                posicion.setVehiculo(vehiculo);
+                if(buscarPosicion(pos2) != -1 && !posiciones.contains(posicion)){
+                    posicion.setVehiculo(vehiculo);
+                }
                 return " Vehiculo cambiado de posicion correctamente ";
             }else{
                 return " No hay ningun vehiculo cargado en esta posicion ";
             }
         }
         return " No hay posiciones cargadas ";
+    }
+    public String agregarAutorizadoPorNumero(int pos, String dni){
+        for (Posicion posicion : posiciones) {
+            if (buscarPosicion(pos) != -1 && !posicion.getAutorizados().contains(dni)){
+                posicion.setAutorizados(autorizados);
+                return " Autorizado ingresado exitosamente ";
+            }else{
+                return " El autorizado ya existe ";
+            }
+        }
+        return " La posicion solicitada no esta cargada ";
+    }
+    public String limpiarAutorizadosPorNumero(int pos){
+        for (Posicion posicion : posiciones) {
+            if (buscarPosicion(pos) != -1){
+                posicion.getAutorizados().clear();
+                return " Autorizados eliminados correctamente ";
+            }else{
+                return " No hay autorizados cargados en esta posicion ";
+            }
+        }
+        return " La posicion solicitada no esta cargada o no existe ";
+    }
+    public String cargarMovimiento(Date fecha, int hora, int posicion, String autorizado, TipoMovimiento tipoMovimiento){
+        Movimiento movimiento;
+        if (tipoMovimiento.equals(TipoMovimiento.ENTRADA)){
+            movimiento = new Movimiento(fecha, hora, posicion, autorizado,TipoMovimiento.ENTRADA);
+        }else{
+            movimiento = new Movimiento(fecha, hora, posicion, autorizado, TipoMovimiento.SALIDA);
+        }
+        if(!movimientos.contains(movimiento)){
+            movimientos.add(movimiento);
+        }else{
+            return " Ya se registro el movimiento ";
+        }
+        return " Movimiento registrado Correctamente ";
+    }
+    public String verMovimientosPorPosicion(int pos){
+        for (Posicion posicion : posiciones) {
+            if (buscarPosicion(pos) != -1){
+                for( Movimiento movimiento : movimientos ){
+                    if(movimiento.getPosicion() == pos ){
+                        StringBuilder respuesta = new StringBuilder();
+                        respuesta.append(movimiento);
+                        return respuesta.toString();
+                    }else{
+                        return " La posicion no tiene movimientos cargados ";
+                    }
+                }
+            }else{
+                return " La posicion solicitada no existe o no esta cargada ";
+            }
+        }
+        return " No se encuentran posiciones cargadas ";
     }
 }

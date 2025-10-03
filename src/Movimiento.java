@@ -1,17 +1,21 @@
 import java.util.Date;
 public class Movimiento {
     private int posicion;
-    private String dni;
+    private String autorizado;
     private Date fecha;
     private int hora;
     private TipoMovimiento tipoMovimiento;
 
-    public  Movimiento(Date fecha, int hora, Posicion posicion,Propietario autorizado, TipoMovimiento tipoMovimiento) {
-        this.dni = autorizado.getDni();
-        this.posicion = posicion.getPosicion();
+    public  Movimiento(Date fecha, int hora, int posicion,String autorizado, TipoMovimiento tipoMovimiento) {
+        this.autorizado = autorizado;
+        this.posicion = posicion;
         this.fecha = fecha;
         this.hora = hora;
         this.tipoMovimiento = tipoMovimiento;
+    }
+
+    public int getPosicion() {
+        return posicion;
     }
 
     @Override
@@ -21,6 +25,6 @@ public class Movimiento {
                 " Hora: " + hora +
                 " Entrada/Salida: " + tipoMovimiento +
                 " Posicion: " + posicion +
-                " Realizado por: " + dni;
+                " Realizado por: " + autorizado;
     }
 }
