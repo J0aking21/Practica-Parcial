@@ -17,7 +17,6 @@ public class Main {
             System.out.println("+--------------------------------+");
             System.out.println("| 0. Salir                       |");
             System.out.println("+--------------------------------+");
-            System.out.println("+--------------------------------+");
             opcion = sc.nextInt();
             switch(opcion){
                 case 1:
