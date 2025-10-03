@@ -2,18 +2,33 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         Garaje garaje = new Garaje();
-        int opcion;
+        int opcion = 0;
 
-        System.out.println("+--------------------------------+");
-        System.out.println("|         Menu Principal         |");
-        System.out.println("+--------------------------------+");
-        System.out.println("| 1. Cargar Posiciones           |");
-        System.out.println("+--------------------------------+");
-        System.out.println("| 2. Cargar Movimientos          |");
-        System.out.println("+--------------------------------+");
-        opcion = sc.nextInt();
+        while( opcion != 3 ){
+            System.out.println("+--------------------------------+");
+            System.out.println("|         Menu Principal         |");
+            System.out.println("+--------------------------------+");
+            System.out.println("| 1. Cargar Posiciones           |");
+            System.out.println("+--------------------------------+");
+            System.out.println("| 2. Cargar Movimientos          |");
+            System.out.println("+--------------------------------+");
+            System.out.println("| 0. Salir                       |");
+            System.out.println("+--------------------------------+");
+            opcion = sc.nextInt();
+            switch(opcion){
+                case 1:
+                    opcionCargaPosiciones(garaje);
+                    break;
+                case 2:
+                    break;
+                case 0:
+                    System.out.println("Finalizando Programa");
+                    break;
+            }
+        }
     }
     public static void opcionCargaPosiciones(Garaje garaje){
         String marca, modelo, patente;
